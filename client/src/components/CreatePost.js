@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 function CreatePost() {
   const initialValues = {
     title: "",
@@ -43,7 +44,7 @@ function CreatePost() {
           <label>Title:</label>
           <ErrorMessage name="title" component="span"></ErrorMessage>
           <Field
-            id="inputCreatePost"
+            id="inputForm"
             name="title"
             placeholder="Input the Title of Article"
           ></Field>
@@ -51,7 +52,7 @@ function CreatePost() {
           <label>Post Content:</label>
           <ErrorMessage name="content" component="span"></ErrorMessage>
           <Field
-            id="inputCreatePost"
+            id="inputForm"
             name="content"
             placeholder="Type your content blog here..."
           ></Field>
@@ -59,7 +60,7 @@ function CreatePost() {
           <label>Authored By: </label>
           <ErrorMessage name="author" component="span"></ErrorMessage>
           <Field
-            id="inputCreatePost"
+            id="inputForm"
             name="author"
             placeholder="Input your name ^_^"
           ></Field>

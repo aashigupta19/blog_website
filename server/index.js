@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const postsRouter = require("./routes/posts");
 const commentsRouter = require("./routes/Comments");
+const usersRouter = require("./routes/Users");
+
 // declarations
 const app = express();
 app.use(express.json());
@@ -16,6 +18,7 @@ const db = require("./models");
 // Routing
 app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
+app.use("/auth", usersRouter);
 
 // server start
 db.sequelize.sync().then(() => {
