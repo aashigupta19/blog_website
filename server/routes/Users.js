@@ -2,6 +2,8 @@ const express = require("express");
 const { Users } = require("../models");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const { sign } = require("jsonwebtoken");
+const { validateToken } = require("../middlewares/AuthMiddlewares");
 
 router.post("/", async (req, res) => {
   // we'll recieve the response in json format for registration
@@ -38,11 +40,25 @@ router.post("/login", async (req, res) => {
     // decryption
     bcrypt.compare(password, user.password).then((auth) => {
       if (!auth) res.json({ error: "username or password is incorrect" });
-      else res.json({ success: "Successfull login" });
+      else {
+        const accessToken = sign(
+          { username: user.username, id: user.id },
+          "importantsecret"
+        );
+
+        // set in session storage
+
+        res.json({ success: "Successfull login", accessToken: accessToken });
+      }
     });
   } else {
     res.json({ error: "User doesn't exist" });
   }
 });
 
+router.get("/validate", validateToken, (req, res) => {
+  res.json(req.user);
+});
 module.exports = router;
+
+// why do we need jwt token, session storage

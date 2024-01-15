@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../helper/AuthContext";
 
 function Login() {
-  let navigate = useNavigate();
-
   const initialValues = {
     username: "",
     password: "",
@@ -16,7 +15,10 @@ function Login() {
     username: yup.string().required("**required"),
   });
 
-  let [loginStatus, setLoginStatus] = useState("");
+  let navigate = useNavigate();
+  let { setLoginStatus, setUserDetails } = useContext(AuthContext);
+
+  let [loginMsg, setLoginMsg] = useState("");
   const onSubmit = (data) => {
     console.log("Input data: ", data);
 
@@ -28,11 +30,21 @@ function Login() {
       const rr = response.data;
       console.log("rr", rr);
       let msg = "";
-      if (rr.error) msg = rr.error;
-      else if (rr.success)
+      if (rr.error) {
+        msg = rr.error;
+        setLoginMsg(msg);
+        alert(msg);
+      } else if (rr.success) {
         msg = `Login successful! Welcome back, ${data.username}`;
-
-      setLoginStatus(msg);
+        // sessionStorage.setItem("accessToken", rr.accessToken);
+        localStorage.setItem("accessToken", rr.accessToken);
+        localStorage.setItem("loggedUser", data.username);
+        setLoginStatus(true);
+        setUserDetails(data.username);
+        setLoginMsg(msg);
+        alert(msg);
+        navigate("/");
+      }
     });
 
     console.log("response", resp);
@@ -65,7 +77,7 @@ function Login() {
           <button type="submit">Login</button>
         </Form>
       </Formik>
-      {loginStatus ? <div className="loginStatus">{loginStatus}</div> : ""}
+      {loginMsg ? <div className="loginMsg">{loginMsg}</div> : ""}
     </div>
   );
 }

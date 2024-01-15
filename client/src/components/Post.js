@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Post() {
   let { id } = useParams();
@@ -9,6 +10,7 @@ function Post() {
   const [comments, setComments] = useState([]);
   const [updateBool, setUpdateBool] = useState(false);
   const [commentContent, setCommentContent] = useState("");
+  let navigate = useNavigate();
 
   useEffect(() => {
     const URL = `http://localhost:4001/posts/id/${id}`;
@@ -35,14 +37,31 @@ function Post() {
     console.log("Input data: ");
 
     const URL = "http://localhost:4001/comments";
+
     const resp = axios
-      .post(URL, { commentBody: commentContent, PostId: id })
+      .post(
+        URL,
+        { commentBody: commentContent, PostId: id },
+        {
+          headers: {
+            // accessToken: sessionStorage.getItem("accessToken"),
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
       .then((response) => {
         console.log("inside axios");
         console.log(response.data);
         console.log("yeye comment added");
-        setUpdateBool(true);
-        setCommentContent("");
+
+        let rr = response.data;
+        if (rr.error) {
+          alert(rr.error);
+          navigate("/login");
+        } else {
+          setUpdateBool(true);
+          setCommentContent("");
+        }
       });
 
     console.log(resp);
@@ -76,7 +95,7 @@ function Post() {
           {comments.map((comment) => {
             return (
               <div key={comment.id} className="comment">
-                {comment.commentBody}
+                {comment.username}: {comment.commentBody}
               </div>
             );
           })}

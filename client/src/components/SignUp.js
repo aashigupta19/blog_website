@@ -3,10 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { useState } from "react";
 function SignUp() {
   let navigate = useNavigate();
-
+  let [loginMsg, setLoginMsg] = useState("");
   const initialValues = {
     username: "",
     password: "",
@@ -28,9 +28,11 @@ function SignUp() {
     const resp = axios.post(URL, data).then((response) => {
       console.log(response.data);
       console.log("user created!");
+      let msg = "Registration Success! Please proceed to login to continue.";
+      setLoginMsg(msg);
+      alert(msg);
+      navigate("/login");
     });
-
-    navigate("/");
 
     console.log("response", resp);
   };
@@ -62,6 +64,7 @@ function SignUp() {
           <button type="submit">Sign Up!</button>
         </Form>
       </Formik>
+      {loginMsg ? <div className="loginMsg">{loginMsg}</div> : ""}
     </div>
   );
 }
