@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import CommentList from "./CommentList";
 function Post() {
   let { id } = useParams();
   const [post, setPost] = useState({});
@@ -66,6 +66,11 @@ function Post() {
 
     console.log(resp);
   };
+
+  const deleteComment = () => {
+    console.log("inside delete comment");
+  };
+
   return (
     <div className="postPage">
       <div className="leftSide">
@@ -91,15 +96,7 @@ function Post() {
             Add
           </button>
         </div>
-        <div className="listOfComments">
-          {comments.map((comment) => {
-            return (
-              <div key={comment.id} className="comment">
-                {comment.username}: {comment.commentBody}
-              </div>
-            );
-          })}
-        </div>
+        <CommentList commentList={comments} updateList={setUpdateBool} />
       </div>
       ;
     </div>

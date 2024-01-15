@@ -30,6 +30,16 @@ function App() {
       });
   }, []);
 
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("loggedUser");
+
+    setLoginStatus(false);
+    setUserDetails("");
+
+    alert("Logout success");
+  };
+
   return (
     <div className="App">
       <AuthContext.Provider
@@ -46,6 +56,9 @@ function App() {
               loginStatus ? (
                 <>
                   <Link to="/">Hey, {userDetails}!</Link>
+                  <Link to="/" onClick={logout}>
+                    Logout
+                  </Link>
                 </>
               ) : (
                 <>

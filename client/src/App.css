@@ -3,7 +3,7 @@
   height: auto;
   display: flex;
   align-items: center;
-  padding-top: 40px;
+  /* padding-top: 40px; */
   flex-direction: column;
 }
 
@@ -12,16 +12,22 @@ body {
   padding: 0;
 }
 
+.postList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .post {
   width: 400px;
   height: 300px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin: 50px;
   border: 1px solid lightgray;
   font-family: Arial, Helvetica, sans-serif;
-
+  
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -197,11 +203,22 @@ button {
 
 .listOfComments .comment {
   width: 70%;
+  flex: 50%;
   height: auto;
   padding: 30px;
   border: 2px solid dodgerblue;
   border-radius: 5px;
   margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+.comment button{
+  width: 20%;
+  cursor: pointer;
 }
 
 /* Login Message */

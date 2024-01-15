@@ -22,7 +22,7 @@ function PostList({ posts }) {
   //   let history = useHistory();
   let history = useNavigate();
   return (
-    <div>
+    <div className="postList">
       {postList.map((post) => {
         return (
           <div
