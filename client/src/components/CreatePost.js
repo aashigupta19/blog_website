@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../helper/AuthContext";
 
 function CreatePost() {
   const initialValues = {
@@ -12,6 +13,7 @@ function CreatePost() {
   };
 
   let navigate = useNavigate();
+  let { setUpdatePostList } = useContext(AuthContext);
 
   const validationSchema = yup.object({
     title: yup.string().required("**required"),
@@ -27,6 +29,7 @@ function CreatePost() {
       console.log("inside axios");
       console.log(response.data);
       console.log("it worked");
+      setUpdatePostList(true);
     });
 
     navigate("/");

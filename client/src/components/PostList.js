@@ -1,26 +1,29 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 // import { useHistory } from "react-router-dom";  no longer used
 import { useNavigate } from "react-router-dom";
-function PostList({ posts }) {
+import AuthContext from "../helper/AuthContext";
+
+function PostList() {
   //   let postsList = posts;
 
   const [postList, setPostList] = useState([]);
-
+  let { updatePostList, setUpdatePostList } = useContext(AuthContext);
   useEffect(() => {
     const URL = "http://localhost:4001/posts";
     const resp = axios.get(URL).then((response) => {
       console.log("inside axios");
       console.log(response.data);
       setPostList(response.data);
+      setUpdatePostList(false);
     });
 
     console.log(resp);
-  }, []);
+  }, [updatePostList]);
 
   //   let history = useHistory();
-  let history = useNavigate();
+  let navigate = useNavigate();
   return (
     <div className="postList">
       {postList.map((post) => {
@@ -29,7 +32,7 @@ function PostList({ posts }) {
             key={post.id}
             className="post"
             onClick={() => {
-              history(`/post/${post.id}`);
+              navigate(`/post/${post.id}`);
             }}
           >
             <div className="title">{post.title}</div>

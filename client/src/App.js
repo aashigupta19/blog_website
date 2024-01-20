@@ -11,6 +11,7 @@ import axios from "axios";
 function App() {
   let [loginStatus, setLoginStatus] = useState(false);
   let [userDetails, setUserDetails] = useState("");
+  let [updatePostList, setUpdatePostList] = useState(false);
 
   useEffect(() => {
     const validateURL = "http://localhost:4001/auth/validate";
@@ -43,31 +44,45 @@ function App() {
   return (
     <div className="App">
       <AuthContext.Provider
-        value={{ loginStatus, setLoginStatus, userDetails, setUserDetails }}
+        value={{
+          loginStatus,
+          setLoginStatus,
+          userDetails,
+          setUserDetails,
+          updatePostList,
+          setUpdatePostList,
+        }}
       >
         {/* prop drilling basically, we want to maintain a state which will take care of managing lgged in
          */}
         <Router>
           <div className="navbar">
-            <Link to="/">Home</Link>
-            <Link to="/createpost">Create A Post</Link>
-            {
-              //sessionStorage.getItem("accessToken") ? (
-              loginStatus ? (
-                <>
-                  <Link to="/">Hey, {userDetails}!</Link>
-                  <Link to="/" onClick={logout}>
-                    Logout
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/login">Login</Link>
-                  <Link to="/signup">SignUp</Link>
-                </>
-              )
-            }
+            <div className="navLeft">
+              <img src="client/src/images/logo.png" alt="logo.png"></img>
+
+              <Link to="/">Home</Link>
+            </div>
+            <div className="navRight">
+              <Link to="/createpost">Create A Post</Link>
+              {
+                //sessionStorage.getItem("accessToken") ? (
+                loginStatus ? (
+                  <>
+                    <Link to="/">Hey, {userDetails}!</Link>
+                    <Link to="/" onClick={logout}>
+                      Logout
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login">Login</Link>
+                    <Link to="/signup">SignUp</Link>
+                  </>
+                )
+              }
+            </div>
           </div>
+
           <Routes>
             <Route path="/" exact element={<PostList />}></Route>
             <Route path="/createpost" exact element={<CreatePost />}></Route>

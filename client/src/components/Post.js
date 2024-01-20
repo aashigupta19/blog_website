@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CommentList from "./CommentList";
+
 function Post() {
   let { id } = useParams();
   const [post, setPost] = useState({});
